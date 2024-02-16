@@ -158,14 +158,11 @@ chkpt_stan <- function(model_code,
   
   stan_data <- data
   
-  if (isFALSE(check_for_model("model.stan", path))) {
-    
-    stan_code_path <- cmdstanr::write_stan_file(
-      code = model_code,
-      dir = paste0(path, "/stan_model"),
-      basename = "model"
-    )
-    
+    if (isFALSE(check_for_model("model.stan", path))) {
+    stan_code_path <- cmdstanr::write_stan_file(code = stan_code, 
+                                                dir = paste0(path, "/stan_model"), basename = "model")
+  } else if (check_for_model("model.stan", path) & isFALSE(exists("stan_code_path"))) {
+    stan_code_path <- file.path(path, "stan_model", "model.stan")
   }
   
   model_threads_name <- ifelse(.Platform$OS.type == "unix", 
